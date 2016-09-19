@@ -68,9 +68,21 @@ namespace EasyCapture
 			if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
 			{
 				int vkCode = Marshal.ReadInt32(lParam);
-				Console.WriteLine((Keys)vkCode);
+				Keys k = (Keys)vkCode;
+				if(k == Keys.F2)
+				{
+					short s = GetKeyState(Keys.ControlKey);
+					bool ctrl = ((s & 0x8000) != 0);
+					Console.WriteLine("Ctrl:{0}, {1}, {2}, {3}", ctrl ? "1" : "0", Convert.ToString((int)lParam, 2), Convert.ToString((int)wParam, 2), Convert.ToString(s, 2).PadLeft(16, '0'));
+					DoCapture();
+				}
 			}
 			return CallNextHookEx(_hookID, nCode, wParam, lParam);
+		}
+
+		static void DoCapture()
+		{
+
 		}
 
 		static void Main()
