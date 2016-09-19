@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -80,8 +82,22 @@ namespace EasyCapture
 			return CallNextHookEx(_hookID, nCode, wParam, lParam);
 		}
 
+		[DllImport("user32.dll")]
+		static extern IntPtr GetForegroundWindow();
+
+
 		static void DoCapture()
 		{
+			ScreenCapture sc = new ScreenCapture();
+			// capture entire screen, and save it to a file
+			Image img = sc.CaptureScreen();
+
+			// display image in a Picture control named imageDisplay
+			//this.imageDisplay.Image = img;
+
+			// capture this window, and save it
+			IntPtr hwnd = GetForegroundWindow();
+			sc.CaptureWindowToFile(hwnd, "C:\\_tmp\\test.png", ImageFormat.Png);
 
 		}
 
