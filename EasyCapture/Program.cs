@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace EasyCapture
 {
-	class Program
+	public class Program
 	{
 		static Win32.LowLevelKeyboardProc _proc = HookCallback;
 		static IntPtr _hookID = IntPtr.Zero;
@@ -65,7 +65,7 @@ namespace EasyCapture
 		{
 			ScreenCapture sc = new ScreenCapture();
 			// capture entire screen, and save it to a file
-			Image img = sc.CaptureScreen();
+			// Image img = sc.CaptureScreen();
 
 			// display image in a Picture control named imageDisplay
 			//this.imageDisplay.Image = img;
@@ -96,8 +96,12 @@ namespace EasyCapture
 			}
 		}
 
-		static void InitGd()
+		static bool _inited = false;
+		public static void InitGd()
 		{
+			if (_inited) return;
+			_inited = true;
+
 			// 高解像度の縮小無効処理
 			// http://stackoverflow.com/questions/13228185/how-to-configure-an-app-to-run-correctly-on-a-machine-with-a-high-dpi-setting-e/13228495#13228495
 			if (Environment.OSVersion.Version.Major >= 6) Win32.SetProcessDPIAware();
