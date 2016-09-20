@@ -15,66 +15,28 @@ namespace EasyCapture
 {
 	class Program
 	{
-		const int WH_KEYBOARD_LL = 13;
-		const int WM_KEYDOWN = 0x0100;
-
-		static LowLevelKeyboardProc _proc = HookCallback;
+		static Win32.LowLevelKeyboardProc _proc = HookCallback;
 		static IntPtr _hookID = IntPtr.Zero;
 
-		[DllImport("user32.dll")]
-		static extern short GetAsyncKeyState(Keys vKey);
 
-		[DllImport("user32.dll")]
-		static extern short GetKeyState(Keys vKey);
-
-		const int VK_F2 = 0x71;
-		const int VK_F10 = 0x79;        // F10 キー
-		const int VK_F11 = 0x7A;        // F11 キー
-		const int VK_MULTIPLY = 0x6A;   // *　キー
-		const int VK_CONTROL = 0x11;
-
-		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-		static extern IntPtr SetWindowsHookEx(
-			int idHook,
-			LowLevelKeyboardProc lpfn,
-			IntPtr hMod,
-			uint dwThreadId
-		);
-
-		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		static extern bool UnhookWindowsHookEx(IntPtr hhk);
-
-		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-		static extern IntPtr CallNextHookEx(
-			IntPtr hhk,
-			int nCode,
-			IntPtr wParam,
-			IntPtr lParam
-		);
-
-		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-		static extern IntPtr GetModuleHandle(string lpModuleName);
-
-		private static IntPtr SetHook(LowLevelKeyboardProc proc)
+		private static IntPtr SetHook(Win32.LowLevelKeyboardProc proc)
 		{
 			using (Process curProcess = Process.GetCurrentProcess())
 			using (ProcessModule curModule = curProcess.MainModule)
 			{
-				return SetWindowsHookEx(WH_KEYBOARD_LL, proc, GetModuleHandle(curModule.ModuleName), 0);
+				return Win32.SetWindowsHookEx(Win32.WH_KEYBOARD_LL, proc, Win32.GetModuleHandle(curModule.ModuleName), 0);
 			}
 		}
-		private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
 		private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
 		{
-			if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
+			if (nCode >= 0 && wParam == (IntPtr)Win32.WM_KEYDOWN)
 			{
 				int vkCode = Marshal.ReadInt32(lParam);
 				Keys k = (Keys)vkCode;
 				if(k == Keys.F2)
 				{
-					short s = GetKeyState(Keys.ControlKey);
+					short s = Win32.GetKeyState(Keys.ControlKey);
 					bool ctrl = ((s & 0x8000) != 0);
 					// Console.WriteLine("Ctrl:{0}, {1}, {2}, {3}", ctrl ? "1" : "0", Convert.ToString((int)lParam, 2), Convert.ToString((int)wParam, 2), Convert.ToString(s, 2).PadLeft(16, '0'));
 					if (ctrl)
@@ -83,7 +45,7 @@ namespace EasyCapture
 					}
 				}
 			}
-			return CallNextHookEx(_hookID, nCode, wParam, lParam);
+			return Win32.CallNextHookEx(_hookID, nCode, wParam, lParam);
 		}
 
 		
@@ -91,10 +53,10 @@ namespace EasyCapture
 
 		static void DoCapture()
 		{
-			IntPtr hwnd = User32.GetForegroundWindow();
+			IntPtr hwnd = Win32.GetForegroundWindow();
 
 			StringBuilder title = new StringBuilder(1048);
-			User32.GetWindowText(hwnd, title, 1024);
+			Win32.GetWindowText(hwnd, title, 1024);
 			Console.WriteLine(title.ToString());
 
 			DoCapture(hwnd);
@@ -138,7 +100,7 @@ namespace EasyCapture
 		{
 			// 高解像度の縮小無効処理
 			// http://stackoverflow.com/questions/13228185/how-to-configure-an-app-to-run-correctly-on-a-machine-with-a-high-dpi-setting-e/13228495#13228495
-			if (Environment.OSVersion.Version.Major >= 6) User32.SetProcessDPIAware();
+			if (Environment.OSVersion.Version.Major >= 6) Win32.SetProcessDPIAware();
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 		}
@@ -168,7 +130,7 @@ namespace EasyCapture
 
 			Application.Run();
 
-			UnhookWindowsHookEx(_hookID);
+			Win32.UnhookWindowsHookEx(_hookID);
 		}
 		static void Main2(string[] args)
 		{
@@ -179,9 +141,9 @@ namespace EasyCapture
 
 				if (true)
 				{
-					short s = GetAsyncKeyState(Keys.F2);
-					short s1 = GetAsyncKeyState(Keys.ControlKey);
-					short s2 = GetKeyState(Keys.ControlKey);
+					short s = Win32.GetAsyncKeyState(Keys.F2);
+					short s1 = Win32.GetAsyncKeyState(Keys.ControlKey);
+					short s2 = Win32.GetKeyState(Keys.ControlKey);
 					if (s != 0)
 					{
 						Console.WriteLine("F2 pushed: {0}", Convert.ToString(s, 2));

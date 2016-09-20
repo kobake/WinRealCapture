@@ -18,7 +18,7 @@ namespace EasyCapture
 		/// <returns></returns>
 		public Image CaptureScreen()
 		{
-			return CaptureWindow(User32.GetDesktopWindow());
+			return CaptureWindow(Win32.GetDesktopWindow());
 		}
 
 		// http://dobon.net/vb/dotnet/graphics/screencapture.html
@@ -43,7 +43,7 @@ namespace EasyCapture
 			//解放
 			g.ReleaseHdc(hDC);
 			g.Dispose();
-			User32.ReleaseDC(IntPtr.Zero, disDC);
+			Win32.ReleaseDC(IntPtr.Zero, disDC);
 
 			return bmp;
 		}
@@ -58,10 +58,10 @@ namespace EasyCapture
 			// return CaptureScreen2();
 
 			// get te hDC of the target window
-			IntPtr hdcSrc = User32.GetWindowDC(handle);
+			IntPtr hdcSrc = Win32.GetWindowDC(handle);
 			// get the size
-			User32.RECT windowRect = new User32.RECT();
-			User32.GetWindowRect(handle, ref windowRect);
+			Win32.RECT windowRect = new Win32.RECT();
+			Win32.GetWindowRect(handle, ref windowRect);
 			int width = windowRect.right - windowRect.left;
 			int height = windowRect.bottom - windowRect.top;
 			// create a device context we can copy to
@@ -80,7 +80,7 @@ namespace EasyCapture
 
 			// clean up 
 			GDI32.DeleteDC(hdcDest);
-			User32.ReleaseDC(handle, hdcSrc);
+			Win32.ReleaseDC(handle, hdcSrc);
 			// get a .NET image object for it
 			Image img = Image.FromHbitmap(hBitmap);
 			// free up the Bitmap object
