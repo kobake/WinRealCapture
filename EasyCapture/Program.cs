@@ -131,7 +131,7 @@ namespace EasyCapture
 
 		static void Main()
 		{
-			DoCapture((IntPtr)0x003F0788);
+			DoCapture((IntPtr)0x001210B4);
 		}
 		static void Main3()
 		{

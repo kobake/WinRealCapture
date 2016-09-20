@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Windows.Forms;
 
 namespace EasyCapture
 {
@@ -19,6 +20,32 @@ namespace EasyCapture
 		{
 			return CaptureWindow(User32.GetDesktopWindow());
 		}
+
+		// http://dobon.net/vb/dotnet/graphics/screencapture.html
+		[DllImport("user32.dll")]
+		private static extern IntPtr GetDC(IntPtr hwnd);
+		public static Bitmap CaptureScreen2()
+		{
+			//プライマリモニタのデバイスコンテキストを取得
+			IntPtr disDC = GetDC(IntPtr.Zero);
+			//Bitmapの作成
+			Bitmap bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width,
+				Screen.PrimaryScreen.Bounds.Height);
+			//Graphicsの作成
+			Graphics g = Graphics.FromImage(bmp);
+			//Graphicsのデバイスコンテキストを取得
+			IntPtr hDC = g.GetHdc();
+			//Bitmapに画像をコピーする
+			GDI32.BitBlt(hDC, 0, 0, bmp.Width, bmp.Height,
+				disDC, 0, 0, GDI32.SRCCOPY);
+			//解放
+			g.ReleaseHdc(hDC);
+			g.Dispose();
+			User32.ReleaseDC(IntPtr.Zero, disDC);
+
+			return bmp;
+		}
+
 		/// <summary>
 		/// Creates an Image object containing a screen shot of a specific window
 		/// </summary>
@@ -26,6 +53,8 @@ namespace EasyCapture
 		/// <returns></returns>
 		public Image CaptureWindow(IntPtr handle)
 		{
+			return CaptureScreen2();
+
 			// get te hDC of the target window
 			IntPtr hdcSrc = User32.GetWindowDC(handle);
 			// get the size
@@ -40,10 +69,17 @@ namespace EasyCapture
 			IntPtr hBitmap = GDI32.CreateCompatibleBitmap(hdcSrc, width, height);
 			// select the bitmap object
 			IntPtr hOld = GDI32.SelectObject(hdcDest, hBitmap);
+
+			// test:line
+			GDI32.MoveToEx(hdcDest, 0, 0, IntPtr.Zero);
+			GDI32.SetDCPenColor(hdcDest, 0x0000FF);
+			GDI32.LineTo(hdcDest, 300, 300);
+			
 			// bitblt over
-			GDI32.BitBlt(hdcDest, 0, 0, width, height, hdcSrc, 0, 0, GDI32.SRCCOPY);
+			//GDI32.BitBlt(hdcDest, 0, 0, width, height, hdcSrc, 0, 0, GDI32.SRCCOPY);
+
 			// restore selection
-			GDI32.SelectObject(hdcDest, hOld);
+			//GDI32.SelectObject(hdcDest, hOld);
 			// clean up 
 			GDI32.DeleteDC(hdcDest);
 			User32.ReleaseDC(handle, hdcSrc);
@@ -97,6 +133,19 @@ namespace EasyCapture
 			public static extern bool DeleteObject(IntPtr hObject);
 			[DllImport("gdi32.dll")]
 			public static extern IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
+
+
+
+			// add
+			// http://www.pinvoke.net/default.aspx/gdi32.LineTo
+			[DllImport("gdi32.dll")]
+			public static extern bool MoveToEx(IntPtr hdc, int X, int Y, IntPtr lpPoint);
+			[DllImport("gdi32.dll")]
+			public static extern bool LineTo(IntPtr hdc, int nXEnd, int nYEnd);
+			[DllImport("gdi32.dll")]
+			public static extern uint SetDCPenColor(IntPtr hdc, uint crColor);
+			[DllImport("gdi32.dll")]
+			public static extern bool Rectangle(IntPtr hdc, int nLeftRect, int nTopRect, int nRightRect, int nBottomRect);
 		}
 
 		/// <summary>
@@ -120,6 +169,9 @@ namespace EasyCapture
 			public static extern IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDC);
 			[DllImport("user32.dll")]
 			public static extern IntPtr GetWindowRect(IntPtr hWnd, ref RECT rect);
+
+			
+
 		}
 	}
 }
