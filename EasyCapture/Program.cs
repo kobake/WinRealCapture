@@ -86,13 +86,18 @@ namespace EasyCapture
 			return CallNextHookEx(_hookID, nCode, wParam, lParam);
 		}
 
-		[DllImport("user32.dll")]
-		static extern IntPtr GetForegroundWindow();
+		
 
 
 		static void DoCapture()
 		{
-			DoCapture(GetForegroundWindow());
+			IntPtr hwnd = User32.GetForegroundWindow();
+
+			StringBuilder title = new StringBuilder(1048);
+			User32.GetWindowText(hwnd, title, 1024);
+			Console.WriteLine(title.ToString());
+
+			DoCapture(hwnd);
 		}
 		static void DoCapture(IntPtr hwnd)
 		{

@@ -36,5 +36,11 @@ namespace EasyCapture
 
 		[System.Runtime.InteropServices.DllImport("user32.dll")]
 		public static extern bool SetProcessDPIAware();
+
+		[DllImport("user32.dll")]
+		public static extern IntPtr GetForegroundWindow();
+
+		[DllImport("user32.dll")]
+		public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int length);
 	}
 }
