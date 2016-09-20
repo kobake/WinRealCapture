@@ -75,8 +75,11 @@ namespace EasyCapture
 				{
 					short s = GetKeyState(Keys.ControlKey);
 					bool ctrl = ((s & 0x8000) != 0);
-					Console.WriteLine("Ctrl:{0}, {1}, {2}, {3}", ctrl ? "1" : "0", Convert.ToString((int)lParam, 2), Convert.ToString((int)wParam, 2), Convert.ToString(s, 2).PadLeft(16, '0'));
-					DoCapture();
+					// Console.WriteLine("Ctrl:{0}, {1}, {2}, {3}", ctrl ? "1" : "0", Convert.ToString((int)lParam, 2), Convert.ToString((int)wParam, 2), Convert.ToString(s, 2).PadLeft(16, '0'));
+					if (ctrl)
+					{
+						DoCapture();
+					}
 				}
 			}
 			return CallNextHookEx(_hookID, nCode, wParam, lParam);
@@ -95,10 +98,13 @@ namespace EasyCapture
 			// display image in a Picture control named imageDisplay
 			//this.imageDisplay.Image = img;
 
+			// ファイル名決定
+			string fname = "capt_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".png";
+
 			// capture this window, and save it
 			IntPtr hwnd = GetForegroundWindow();
-			sc.CaptureWindowToFile(hwnd, "C:\\_tmp\\test.png", ImageFormat.Png);
-
+			sc.CaptureWindowToFile(hwnd, "C:\\_tmp\\" + fname, ImageFormat.Png);
+			Console.WriteLine(fname);
 		}
 
 		static void Main()
