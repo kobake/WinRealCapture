@@ -129,12 +129,24 @@ namespace EasyCapture
 			}
 		}
 
+		static void InitGd()
+		{
+			// 高解像度の縮小無効処理
+			// http://stackoverflow.com/questions/13228185/how-to-configure-an-app-to-run-correctly-on-a-machine-with-a-high-dpi-setting-e/13228495#13228495
+			if (Environment.OSVersion.Version.Major >= 6) User32.SetProcessDPIAware();
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
+		}
+		static void Main4()
+		{
+			InitGd();
+
+			DoCapture((IntPtr)0x000B09D0);
+		}
 		static void Main()
 		{
-			DoCapture((IntPtr)0x001210B4);
-		}
-		static void Main3()
-		{
+			InitGd();
+
 			var doWork = Task.Run(() =>
 			{
 				try

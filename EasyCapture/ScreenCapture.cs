@@ -24,8 +24,10 @@ namespace EasyCapture
 		// http://dobon.net/vb/dotnet/graphics/screencapture.html
 		[DllImport("user32.dll")]
 		private static extern IntPtr GetDC(IntPtr hwnd);
+		
 		public static Bitmap CaptureScreen2()
 		{
+			
 			//プライマリモニタのデバイスコンテキストを取得
 			IntPtr disDC = GetDC(IntPtr.Zero);
 			//Bitmapの作成
@@ -53,7 +55,7 @@ namespace EasyCapture
 		/// <returns></returns>
 		public Image CaptureWindow(IntPtr handle)
 		{
-			return CaptureScreen2();
+			// return CaptureScreen2();
 
 			// get te hDC of the target window
 			IntPtr hdcSrc = User32.GetWindowDC(handle);
@@ -70,16 +72,12 @@ namespace EasyCapture
 			// select the bitmap object
 			IntPtr hOld = GDI32.SelectObject(hdcDest, hBitmap);
 
-			// test:line
-			GDI32.MoveToEx(hdcDest, 0, 0, IntPtr.Zero);
-			GDI32.SetDCPenColor(hdcDest, 0x0000FF);
-			GDI32.LineTo(hdcDest, 300, 300);
-			
 			// bitblt over
-			//GDI32.BitBlt(hdcDest, 0, 0, width, height, hdcSrc, 0, 0, GDI32.SRCCOPY);
+			GDI32.BitBlt(hdcDest, 0, 0, width, height, hdcSrc, 0, 0, GDI32.SRCCOPY);
 
 			// restore selection
-			//GDI32.SelectObject(hdcDest, hOld);
+			GDI32.SelectObject(hdcDest, hOld);
+
 			// clean up 
 			GDI32.DeleteDC(hdcDest);
 			User32.ReleaseDC(handle, hdcSrc);
@@ -148,30 +146,6 @@ namespace EasyCapture
 			public static extern bool Rectangle(IntPtr hdc, int nLeftRect, int nTopRect, int nRightRect, int nBottomRect);
 		}
 
-		/// <summary>
-		/// Helper class containing User32 API functions
-		/// </summary>
-		private class User32
-		{
-			[StructLayout(LayoutKind.Sequential)]
-			public struct RECT
-			{
-				public int left;
-				public int top;
-				public int right;
-				public int bottom;
-			}
-			[DllImport("user32.dll")]
-			public static extern IntPtr GetDesktopWindow();
-			[DllImport("user32.dll")]
-			public static extern IntPtr GetWindowDC(IntPtr hWnd);
-			[DllImport("user32.dll")]
-			public static extern IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDC);
-			[DllImport("user32.dll")]
-			public static extern IntPtr GetWindowRect(IntPtr hWnd, ref RECT rect);
-
-			
-
-		}
+		
 	}
 }
