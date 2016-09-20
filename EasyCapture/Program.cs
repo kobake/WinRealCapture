@@ -92,6 +92,10 @@ namespace EasyCapture
 
 		static void DoCapture()
 		{
+			DoCapture(GetForegroundWindow());
+		}
+		static void DoCapture(IntPtr hwnd)
+		{
 			ScreenCapture sc = new ScreenCapture();
 			// capture entire screen, and save it to a file
 			Image img = sc.CaptureScreen();
@@ -116,7 +120,6 @@ namespace EasyCapture
 			if (ok)
 			{
 				// capture this window, and save it
-				IntPtr hwnd = GetForegroundWindow();
 				sc.CaptureWindowToFile(hwnd, fpath, ImageFormat.Png);
 				Console.WriteLine(fname);
 			}
@@ -127,6 +130,10 @@ namespace EasyCapture
 		}
 
 		static void Main()
+		{
+			DoCapture((IntPtr)0x003F0788);
+		}
+		static void Main3()
 		{
 			var doWork = Task.Run(() =>
 			{
