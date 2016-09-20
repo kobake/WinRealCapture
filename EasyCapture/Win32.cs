@@ -116,7 +116,19 @@ namespace EasyCapture
 		public static extern bool Rectangle(IntPtr hdc, int nLeftRect, int nTopRect, int nRightRect, int nBottomRect);
 
 		// 正確なウィンドウサイズを取得するためのもの
+		/*
+		Dwmapi.dll
+		HRESULT WINAPI DwmGetWindowAttribute(
+			HWND  hwnd,
+			DWORD dwAttribute,
+			_Out_ PVOID pvAttribute,
+			DWORD cbAttribute
+		);
+		*/
+		[DllImport("dwmapi.dll")]
+		public static extern int DwmGetWindowAttribute(IntPtr hwnd, int dwAttribute, ref RECT rect, int cbAttribute);
+		public const int DWMWA_EXTENDED_FRAME_BOUNDS = 9;
 	}
-	
+
 }
 

@@ -58,15 +58,28 @@ namespace EasyCapture
 			// return CaptureScreen2();
 			Program.InitGd();
 
-			// get te hDC of the target window
-			IntPtr hdcSrc = Win32.GetWindowDC(handle);
+
 			// get the size
 			Win32.RECT windowRect = new Win32.RECT();
 			Win32.GetWindowRect(handle, ref windowRect);
 			int width = windowRect.right - windowRect.left;
 			int height = windowRect.bottom - windowRect.top;
+
+			// real rect
+			Win32.RECT windowRect2 = new Win32.RECT();
+			Win32.DwmGetWindowAttribute(handle, Win32.DWMWA_EXTENDED_FRAME_BOUNDS, ref windowRect2, 4 * 4);
+			int width2 = windowRect2.right - windowRect2.left;
+			int height2 = windowRect2.bottom - windowRect2.top;
+			windowRect = windowRect2;
+			width = width2;
+			height = height2;
+
+			// get te hDC of the target window
+			IntPtr hdcSrc = Win32.GetWindowDC(IntPtr.Zero);
+
 			// create a device context we can copy to
 			IntPtr hdcDest = Win32.CreateCompatibleDC(hdcSrc);
+
 			// create a bitmap we can copy it to,
 			// using GetDeviceCaps to get the width/height
 			IntPtr hBitmap = Win32.CreateCompatibleBitmap(hdcSrc, width, height);
@@ -74,7 +87,7 @@ namespace EasyCapture
 			IntPtr hOld = Win32.SelectObject(hdcDest, hBitmap);
 
 			// bitblt over
-			Win32.BitBlt(hdcDest, 0, 0, width, height, hdcSrc, 0, 0, Win32.SRCCOPY);
+			Win32.BitBlt(hdcDest, 0, 0, width, height, hdcSrc, windowRect.left, windowRect.top, Win32.SRCCOPY);
 
 			// restore selection
 			Win32.SelectObject(hdcDest, hOld);
