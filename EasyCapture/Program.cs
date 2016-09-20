@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -99,12 +100,30 @@ namespace EasyCapture
 			//this.imageDisplay.Image = img;
 
 			// ファイル名決定
-			string fname = "capt_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".png";
-
-			// capture this window, and save it
-			IntPtr hwnd = GetForegroundWindow();
-			sc.CaptureWindowToFile(hwnd, "C:\\_tmp\\" + fname, ImageFormat.Png);
-			Console.WriteLine(fname);
+			string fname = "";
+			string fpath = "";
+			bool ok = false;
+			for (int i = 0; i <= 99; i++)
+			{
+				fname = "capt_" + DateTime.Now.ToString("yyyyMMdd_HHmmss_") + i.ToString().PadLeft(2, '0') + ".png";
+				fpath = "C:\\_tmp\\" + fname;
+				if (!File.Exists(fpath))
+				{
+					ok = true;
+					break;
+				}
+			}
+			if (ok)
+			{
+				// capture this window, and save it
+				IntPtr hwnd = GetForegroundWindow();
+				sc.CaptureWindowToFile(hwnd, fpath, ImageFormat.Png);
+				Console.WriteLine(fname);
+			}
+			else
+			{
+				Console.WriteLine("failed to decide filename");
+			}
 		}
 
 		static void Main()
