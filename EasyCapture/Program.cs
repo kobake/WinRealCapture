@@ -54,22 +54,12 @@ namespace EasyCapture
 		static void DoCapture()
 		{
 			IntPtr hwnd = Win32.GetForegroundWindow();
-
-			StringBuilder title = new StringBuilder(1048);
-			Win32.GetWindowText(hwnd, title, 1024);
-			Console.WriteLine(title.ToString());
-
 			DoCapture(hwnd);
 		}
 		static void DoCapture(IntPtr hwnd)
 		{
 			ScreenCapture sc = new ScreenCapture();
-			// capture entire screen, and save it to a file
-			// Image img = sc.CaptureScreen();
-
-			// display image in a Picture control named imageDisplay
-			//this.imageDisplay.Image = img;
-
+			
 			// ファイル名決定
 			string fname = "";
 			string fpath = "";
@@ -88,7 +78,13 @@ namespace EasyCapture
 			{
 				// capture this window, and save it
 				sc.CaptureWindowToFile(hwnd, fpath, ImageFormat.Png);
-				Console.WriteLine(fname);
+
+				// title取得
+				StringBuilder title = new StringBuilder(1048);
+				Win32.GetWindowText(hwnd, title, 1024);
+
+				// ファイル名表示
+				Console.WriteLine("{0} ({1})", fname, title.ToString());
 			}
 			else
 			{
@@ -108,12 +104,7 @@ namespace EasyCapture
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 		}
-		static void Main4()
-		{
-			InitGd();
-
-			DoCapture((IntPtr)0x000B09D0);
-		}
+		
 		static void Main()
 		{
 			InitGd();
@@ -136,28 +127,6 @@ namespace EasyCapture
 
 			Win32.UnhookWindowsHookEx(_hookID);
 		}
-		static void Main2(string[] args)
-		{
-			
-			while (true)
-			{
-				Thread.Sleep(1000);
-
-				if (true)
-				{
-					short s = Win32.GetAsyncKeyState(Keys.F2);
-					short s1 = Win32.GetAsyncKeyState(Keys.ControlKey);
-					short s2 = Win32.GetKeyState(Keys.ControlKey);
-					if (s != 0)
-					{
-						Console.WriteLine("F2 pushed: {0}", Convert.ToString(s, 2));
-						Console.WriteLine("Ctrl_1: {0}", Convert.ToString(s1, 2));
-						Console.WriteLine("Ctrl_2: {0}", Convert.ToString(s2, 2));
-						Console.WriteLine("");
-					}
-				}
-				
-			}
-		}
+		
 	}
 }
