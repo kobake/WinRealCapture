@@ -5,6 +5,9 @@
 Windows 用です。
 高解像度モニタで表示倍率を変更している場合に既存キャプチャソフトがうまく動かない（キャプチャ領域が大きくずれる）ことがあるので自作しました。
 
+## 実行ファイルダウンロード
+- [WinRealCapture_ver0.8.0.0.zip](https://github.com/kobake/WinRealCapture/raw/master/archives/WinRealCapture_ver0.8.0.0.zip)
+
 ## Screenshot
 <img src="https://raw.githubusercontent.com/kobake/WinRealCapture/master/screenshots/screenshot.png" width="600" />
 
