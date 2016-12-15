@@ -35,9 +35,12 @@ namespace WinRealCapture
             try
             {
                 SavingDirectoryTextBox.Text = Properties.Settings.Default["SavingDirectory"].ToString();
+                if (SavingDirectoryTextBox.Text == "") throw new Exception("");
             }
             catch (Exception)
             {
+                // Default directory
+                SavingDirectoryTextBox.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
             }
 
             // キーボードフック開始
@@ -83,6 +86,10 @@ namespace WinRealCapture
 
                 // リストボックスに要素追加
                 SavedFileListBox.Items.Add(new SavedItem { FilePath = fpath });
+
+                // この時点でも SavingDirectory をユーザデータとして保存しておく (保存先を手動で変えられた場合を想定)
+                Properties.Settings.Default["SavingDirectory"] = savingDirectory;
+                Properties.Settings.Default.Save();
             }
             catch(Exception ex)
             {
