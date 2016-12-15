@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -23,6 +24,23 @@ namespace WinRealCapture
         public MainWindow()
         {
             InitializeComponent();
+
+            // 
+            
+        }
+
+        private void SavingDirectorySelectButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new FolderBrowserDialog();
+            dialog.Description = "Select saving directory";
+            dialog.RootFolder = Environment.SpecialFolder.MyComputer;
+            dialog.SelectedPath = SavingDirectoryTextBox.Text;
+            dialog.ShowNewFolderButton = true;
+            var ret = dialog.ShowDialog();
+            if(ret== System.Windows.Forms.DialogResult.OK)
+            {
+                SavingDirectoryTextBox.Text = dialog.SelectedPath;
+            }
         }
     }
 }

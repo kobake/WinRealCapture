@@ -23,8 +23,8 @@
         </Grid.ColumnDefinitions>
 
         <Label Grid.Column="0" Content="Saving Directory:" />
-        <TextBox Grid.Column="1" Text="C:\_tmp" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Margin="4,0,4,0" />
-        <Button Grid.Column="2" Content="..." />
+        <TextBox Grid.Column="1" x:Name="SavingDirectoryTextBox" Text="" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Margin="4,0,4,0" />
+        <Button Grid.Column="2" x:Name="SavingDirectorySelectButton" Content="..." Click="SavingDirectorySelectButton_Click" />
       </Grid>
     </Border>
 
