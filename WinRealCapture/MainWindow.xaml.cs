@@ -25,8 +25,14 @@ namespace WinRealCapture
         {
             InitializeComponent();
 
-            // 
-            
+            // ユーザデータから前回のディレクトリ読み出し
+            try
+            {
+                SavingDirectoryTextBox.Text = Properties.Settings.Default["SavingDirectory"].ToString();
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private void SavingDirectorySelectButton_Click(object sender, RoutedEventArgs e)
@@ -40,6 +46,10 @@ namespace WinRealCapture
             if(ret== System.Windows.Forms.DialogResult.OK)
             {
                 SavingDirectoryTextBox.Text = dialog.SelectedPath;
+
+                // ユーザデータとして保存しておく
+                Properties.Settings.Default["SavingDirectory"] = dialog.SelectedPath;
+                Properties.Settings.Default.Save();
             }
         }
     }
