@@ -138,5 +138,33 @@ namespace WinRealCapture
                 PreviewImage.Source = null;
             }
         }
+
+        // リストボックス要素のダブルクリックまたはEnter押下でファイルを直接開く
+        private void SavedFileListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            OpenSelectedFile();
+        }
+        private void SavedFileListBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if(e.Key== Key.Enter)
+            {
+                OpenSelectedFile();
+            }
+        }
+        private void OpenSelectedFile()
+        {
+            var item = SavedFileListBox.SelectedItem as SavedItem;
+            if (item == null) return;
+            try
+            {
+                Process.Start(item.FilePath);
+            }
+            catch (Exception ex)
+            {
+                ShowError("FileOpenError: " + ex.Message);
+            }
+        }
+
+
     }
 }
