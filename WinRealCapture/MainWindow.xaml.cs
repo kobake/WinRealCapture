@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,9 @@ namespace WinRealCapture
         {
             InitializeComponent();
 
+            // エラーラベルは非表示にしておく
+            HideError();
+
             // ユーザデータから前回のディレクトリ読み出し
             try
             {
@@ -46,19 +50,40 @@ namespace WinRealCapture
             KeyboardHook.EndHook();
         }
 
+        // エラー表示
+        private void ShowError(string error)
+        {
+            ErrorLabel.Visibility = Visibility.Visible;
+            ErrorLabel.Content = error;
+        }
+        private void HideError()
+        {
+            ErrorLabel.Visibility = Visibility.Collapsed;
+            ErrorLabel.Content = "";
+        }
+
         // Ctrl + F2 が押されたときに呼ばれるところ
         private void OnCtrlF2()
         {
             // DoCapture();
             Debug.WriteLine("Ctrl+F2");
+            HideError();
             try
             {
                 string savingDirectory = SavingDirectoryTextBox.Text;
+
+                // ディレクトリ有無チェック
+                if (!Directory.Exists(savingDirectory))
+                {
+                    throw new Exception(string.Format("SavingDirectory \"{0}\" not found", savingDirectory));
+                }
+
+                // キャプチャ実施
                 Capture.CaptureActiveWindow(savingDirectory);
             }
             catch(Exception ex)
             {
-                Debug.WriteLine("CaptureError: " + ex.Message);
+                ShowError("CaptureError: " + ex.Message);
             }
         }
 

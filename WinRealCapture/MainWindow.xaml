@@ -10,6 +10,7 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
     
@@ -28,8 +29,16 @@
       </Grid>
     </Border>
 
-    <!-- 画像一覧プレビュー部分 -->
+    <!-- メッセージ表示部分 -->
     <Border Grid.Row="1" BorderThickness="1" BorderBrush="#ddd" Margin="4" Padding="4">
+      <StackPanel Orientation="Vertical">
+        <Label x:Name="MessageLabel" Content="Usage: You can capture active window image by pressing Ctrl + F2 key." />
+        <Label x:Name="ErrorLabel" Content="Error: none" Foreground="#f00" />
+      </StackPanel>
+    </Border>
+
+    <!-- 画像一覧プレビュー部分 -->
+    <Border Grid.Row="2" BorderThickness="1" BorderBrush="#ddd" Margin="4" Padding="4">
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
