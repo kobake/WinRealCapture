@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WinRealCapture.Models;
 
 namespace WinRealCapture
 {
@@ -33,7 +34,18 @@ namespace WinRealCapture
             catch (Exception)
             {
             }
+
+            // キーボードフック開始
+            KeyboardHook.StartHook();
         }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            // キーボードフック終了
+            KeyboardHook.EndHook();
+        }
+
+
 
         private void SavingDirectorySelectButton_Click(object sender, RoutedEventArgs e)
         {

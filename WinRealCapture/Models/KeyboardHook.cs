@@ -15,6 +15,14 @@ namespace WinRealCapture.Models
         static Win32Wrap.LowLevelKeyboardProc _proc = HookCallback;
         static IntPtr _hookID = IntPtr.Zero;
 
+        public static void StartHook()
+        {
+            SetHook(_proc);
+        }
+        public static void EndHook()
+        {
+            Win32Wrap.UnhookWindowsHookEx(_hookID);
+        }
 
         private static IntPtr SetHook(Win32Wrap.LowLevelKeyboardProc proc)
         {

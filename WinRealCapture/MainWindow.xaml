@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WinRealCapture"
         mc:Ignorable="d"
         Icon="icon.ico"
-        Title="WinRealCapture" Height="350" Width="525">
+        Title="WinRealCapture" Height="350" Width="525" Closed="Window_Closed">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
