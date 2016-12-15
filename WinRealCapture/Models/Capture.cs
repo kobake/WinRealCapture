@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -11,13 +12,13 @@ namespace WinRealCapture.Models
 {
     public class Capture
     {
-        public static void CaptureActiveWindow(string savingDirectory)
+        public static string CaptureActiveWindow(string savingDirectory)
         {
             IntPtr hwnd = Win32Wrap.GetForegroundWindow();
-            DoCapture(hwnd, savingDirectory);
+            return DoCapture(hwnd, savingDirectory);
         }
 
-        public static void DoCapture(IntPtr hwnd, string savingDirectory)
+        public static string DoCapture(IntPtr hwnd, string savingDirectory)
         {
             ScreenCapture sc = new ScreenCapture();
 
@@ -35,6 +36,7 @@ namespace WinRealCapture.Models
                     break;
                 }
             }
+
             if (ok)
             {
                 // capture this window, and save it
@@ -45,11 +47,14 @@ namespace WinRealCapture.Models
                 Win32Wrap.GetWindowText(hwnd, title, 1024);
 
                 // ファイル名表示
-                Console.WriteLine("{0} ({1})", fname, title.ToString());
+                Debug.WriteLine("{0} ({1})", fname, title.ToString());
+
+                // ファイル名を返す
+                return fpath;
             }
             else
             {
-                Console.WriteLine("failed to decide filename");
+                throw new Exception("Failed to decide filename");
             }
         }
     }

@@ -14,7 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+// using System.Windows.Shapes;
 using WinRealCapture.Models;
 
 namespace WinRealCapture
@@ -62,6 +62,16 @@ namespace WinRealCapture
             ErrorLabel.Content = "";
         }
 
+        class SavedItem
+        {
+            public string FilePath { get; set; }
+
+            public override string ToString()
+            {
+                return Path.GetFileName(FilePath);
+            }
+        }
+
         // Ctrl + F2 が押されたときに呼ばれるところ
         private void OnCtrlF2()
         {
@@ -79,7 +89,10 @@ namespace WinRealCapture
                 }
 
                 // キャプチャ実施
-                Capture.CaptureActiveWindow(savingDirectory);
+                string fpath = Capture.CaptureActiveWindow(savingDirectory);
+
+                // リストボックスに要素追加
+                SavedFileListBox.Items.Add(new SavedItem { FilePath = fpath });
             }
             catch(Exception ex)
             {
