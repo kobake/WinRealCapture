@@ -150,6 +150,10 @@ namespace WinRealCapture
             {
                 OpenSelectedFile();
             }
+            else if (e.Key == Key.Delete)
+            {
+                DeleteSelectedFile();
+            }
         }
         private void OpenSelectedFile()
         {
@@ -157,11 +161,27 @@ namespace WinRealCapture
             if (item == null) return;
             try
             {
+                HideError();
                 Process.Start(item.FilePath);
             }
             catch (Exception ex)
             {
                 ShowError("FileOpenError: " + ex.Message);
+            }
+        }
+        private void DeleteSelectedFile()
+        {
+            var item = SavedFileListBox.SelectedItem as SavedItem;
+            if (item == null) return;
+            try
+            {
+                HideError();
+                SavedFileListBox.Items.Remove(item);
+                PreviewImage.Source = null;
+                File.Delete(item.FilePath);
+            }
+            catch (Exception)
+            {
             }
         }
 
