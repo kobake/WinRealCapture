@@ -9,7 +9,7 @@ using System.Drawing.Imaging;
 using System.Windows.Forms;
 using Win32WrapLib;
 
-namespace EasyCapture
+namespace Win32WrapLib
 {
     public class ScreenCapture
     {
@@ -57,7 +57,7 @@ namespace EasyCapture
         public Image CaptureWindow(IntPtr handle)
         {
             // return CaptureScreen2();
-            Program.InitGd();
+            Gd.InitGd();
 
 
             // get the size
