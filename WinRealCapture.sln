@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinRealCaptureConsole", "Wi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinRealCapture", "WinRealCapture\WinRealCapture.csproj", "{F2A375FB-CC16-402D-AA18-1D67F936FA4D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win32WrapLib", "Win32Wrap\Win32WrapLib.csproj", "{591EB10C-9963-42E4-B659-2D3309B4DEFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F2A375FB-CC16-402D-AA18-1D67F936FA4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2A375FB-CC16-402D-AA18-1D67F936FA4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2A375FB-CC16-402D-AA18-1D67F936FA4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{591EB10C-9963-42E4-B659-2D3309B4DEFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{591EB10C-9963-42E4-B659-2D3309B4DEFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{591EB10C-9963-42E4-B659-2D3309B4DEFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{591EB10C-9963-42E4-B659-2D3309B4DEFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

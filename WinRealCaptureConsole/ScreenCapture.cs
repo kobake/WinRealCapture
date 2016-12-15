@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
+using Win32WrapLib;
 
 namespace EasyCapture
 {
@@ -18,7 +19,7 @@ namespace EasyCapture
         /// <returns></returns>
         public Image CaptureScreen()
         {
-            return CaptureWindow(Win32.GetDesktopWindow());
+            return CaptureWindow(Win32Wrap.GetDesktopWindow());
         }
 
         // http://dobon.net/vb/dotnet/graphics/screencapture.html
@@ -38,12 +39,12 @@ namespace EasyCapture
             //Graphicsのデバイスコンテキストを取得
             IntPtr hDC = g.GetHdc();
             //Bitmapに画像をコピーする
-            Win32.BitBlt(hDC, 0, 0, bmp.Width, bmp.Height,
-                disDC, 0, 0, Win32.SRCCOPY);
+            Win32Wrap.BitBlt(hDC, 0, 0, bmp.Width, bmp.Height,
+                disDC, 0, 0, Win32Wrap.SRCCOPY);
             //解放
             g.ReleaseHdc(hDC);
             g.Dispose();
-            Win32.ReleaseDC(IntPtr.Zero, disDC);
+            Win32Wrap.ReleaseDC(IntPtr.Zero, disDC);
 
             return bmp;
         }
@@ -60,14 +61,14 @@ namespace EasyCapture
 
 
             // get the size
-            Win32.RECT windowRect = new Win32.RECT();
-            Win32.GetWindowRect(handle, ref windowRect);
+            Win32Wrap.RECT windowRect = new Win32Wrap.RECT();
+            Win32Wrap.GetWindowRect(handle, ref windowRect);
             int width = windowRect.right - windowRect.left;
             int height = windowRect.bottom - windowRect.top;
 
             // real rect
-            Win32.RECT windowRect2 = new Win32.RECT();
-            Win32.DwmGetWindowAttribute(handle, Win32.DWMWA_EXTENDED_FRAME_BOUNDS, ref windowRect2, 4 * 4);
+            Win32Wrap.RECT windowRect2 = new Win32Wrap.RECT();
+            Win32Wrap.DwmGetWindowAttribute(handle, Win32Wrap.DWMWA_EXTENDED_FRAME_BOUNDS, ref windowRect2, 4 * 4);
             int width2 = windowRect2.right - windowRect2.left;
             int height2 = windowRect2.bottom - windowRect2.top;
             windowRect = windowRect2;
@@ -75,30 +76,30 @@ namespace EasyCapture
             height = height2;
 
             // get te hDC of the target window
-            IntPtr hdcSrc = Win32.GetWindowDC(IntPtr.Zero);
+            IntPtr hdcSrc = Win32Wrap.GetWindowDC(IntPtr.Zero);
 
             // create a device context we can copy to
-            IntPtr hdcDest = Win32.CreateCompatibleDC(hdcSrc);
+            IntPtr hdcDest = Win32Wrap.CreateCompatibleDC(hdcSrc);
 
             // create a bitmap we can copy it to,
             // using GetDeviceCaps to get the width/height
-            IntPtr hBitmap = Win32.CreateCompatibleBitmap(hdcSrc, width, height);
+            IntPtr hBitmap = Win32Wrap.CreateCompatibleBitmap(hdcSrc, width, height);
             // select the bitmap object
-            IntPtr hOld = Win32.SelectObject(hdcDest, hBitmap);
+            IntPtr hOld = Win32Wrap.SelectObject(hdcDest, hBitmap);
 
             // bitblt over
-            Win32.BitBlt(hdcDest, 0, 0, width, height, hdcSrc, windowRect.left, windowRect.top, Win32.SRCCOPY);
+            Win32Wrap.BitBlt(hdcDest, 0, 0, width, height, hdcSrc, windowRect.left, windowRect.top, Win32Wrap.SRCCOPY);
 
             // restore selection
-            Win32.SelectObject(hdcDest, hOld);
+            Win32Wrap.SelectObject(hdcDest, hOld);
 
             // clean up 
-            Win32.DeleteDC(hdcDest);
-            Win32.ReleaseDC(handle, hdcSrc);
+            Win32Wrap.DeleteDC(hdcDest);
+            Win32Wrap.ReleaseDC(handle, hdcSrc);
             // get a .NET image object for it
             Image img = Image.FromHbitmap(hBitmap);
             // free up the Bitmap object
-            Win32.DeleteObject(hBitmap);
+            Win32Wrap.DeleteObject(hBitmap);
             return img;
         }
         /// <summary>
