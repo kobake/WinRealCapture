@@ -31,6 +31,12 @@ namespace WinRealCapture
             // エラーラベルは非表示にしておく
             HideError();
 
+            // バージョン表示
+            System.Diagnostics.FileVersionInfo ver =
+                System.Diagnostics.FileVersionInfo.GetVersionInfo(
+                System.Reflection.Assembly.GetExecutingAssembly().Location);
+            this.Title += " Ver" + ver.ProductVersion;
+
             // ユーザデータから前回のディレクトリ読み出し
             try
             {
