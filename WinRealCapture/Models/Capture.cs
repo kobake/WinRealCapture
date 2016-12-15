@@ -11,13 +11,13 @@ namespace WinRealCapture.Models
 {
     public class Capture
     {
-        public static void DoCapture()
+        public static void CaptureActiveWindow(string savingDirectory)
         {
             IntPtr hwnd = Win32Wrap.GetForegroundWindow();
-            DoCapture(hwnd);
+            DoCapture(hwnd, savingDirectory);
         }
 
-        public static void DoCapture(IntPtr hwnd)
+        public static void DoCapture(IntPtr hwnd, string savingDirectory)
         {
             ScreenCapture sc = new ScreenCapture();
 
@@ -28,7 +28,7 @@ namespace WinRealCapture.Models
             for (int i = 0; i <= 99; i++)
             {
                 fname = "capt_" + DateTime.Now.ToString("yyyyMMdd_HHmmss_") + i.ToString().PadLeft(2, '0') + ".png";
-                fpath = "C:\\_tmp\\" + fname;
+                fpath = Path.Combine(savingDirectory, fname);
                 if (!File.Exists(fpath))
                 {
                     ok = true;

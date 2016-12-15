@@ -51,7 +51,15 @@ namespace WinRealCapture
         {
             // DoCapture();
             Debug.WriteLine("Ctrl+F2");
-            Capture.DoCapture();
+            try
+            {
+                string savingDirectory = SavingDirectoryTextBox.Text;
+                Capture.CaptureActiveWindow(savingDirectory);
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine("CaptureError: " + ex.Message);
+            }
         }
 
 
