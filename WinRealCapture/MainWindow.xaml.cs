@@ -51,6 +51,7 @@ namespace WinRealCapture
         {
             // DoCapture();
             Debug.WriteLine("Ctrl+F2");
+            Capture.DoCapture();
         }
 
 
