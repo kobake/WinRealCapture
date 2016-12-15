@@ -36,8 +36,18 @@
           <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <ListBox Grid.Column="0" Width="150px" />
-        <Image Grid.Column="1" />
+        <Grid Grid.Column="0" Width="150px">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+          </Grid.RowDefinitions>
+          <Label Grid.Row="0" Content="Saved images" />
+          <ListBox  Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,4,0" />
+          
+        </Grid>
+        <Border Grid.Column="1" BorderThickness="1" BorderBrush="#ddd" >
+          <Image x:Name="PreviewImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        </Border>
       </Grid>
     </Border>
 
