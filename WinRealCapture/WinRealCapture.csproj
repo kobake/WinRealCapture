@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="Models\Capture.cs" />
     <Compile Include="Models\KeyboardHook.cs" />
+    <Compile Include="Models\SavedItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

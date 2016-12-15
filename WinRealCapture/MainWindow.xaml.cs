@@ -62,16 +62,6 @@ namespace WinRealCapture
             ErrorLabel.Content = "";
         }
 
-        class SavedItem
-        {
-            public string FilePath { get; set; }
-
-            public override string ToString()
-            {
-                return Path.GetFileName(FilePath);
-            }
-        }
-
         // Ctrl + F2 が押されたときに呼ばれるところ
         private void OnCtrlF2()
         {
@@ -117,6 +107,28 @@ namespace WinRealCapture
                 // ユーザデータとして保存しておく
                 Properties.Settings.Default["SavingDirectory"] = dialog.SelectedPath;
                 Properties.Settings.Default.Save();
+            }
+        }
+
+        // リストボックスの要素が選択されたらプレビュー画像を表示する
+        private void SavedFileListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var item = SavedFileListBox.SelectedItem as SavedItem;
+            if (item == null) return;
+            try
+            {
+                // http://stackoverflow.com/questions/6430299/bitmapimage-in-wpf-does-lock-file
+                // var image = new BitmapImage(new Uri(item.FilePath)); // これだとファイルがロックされてしまう
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.UriSource = new Uri(item.FilePath);
+                image.EndInit();
+                PreviewImage.Source = image;
+            }
+            catch (Exception)
+            {
+                PreviewImage.Source = null;
             }
         }
     }
