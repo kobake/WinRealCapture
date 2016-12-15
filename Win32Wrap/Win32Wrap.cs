@@ -6,14 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace EasyCapture
+namespace Win32WrapLib
 {
-
-
     /// <summary>
     /// Helper class containing User32 API functions
     /// </summary>
-    public class Win32
+    public class Win32Wrap
     {
         public const int WH_KEYBOARD_LL = 13;
         public const int WM_KEYDOWN = 0x0100;
