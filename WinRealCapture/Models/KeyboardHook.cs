@@ -14,9 +14,11 @@ namespace WinRealCapture.Models
     {
         static Win32Wrap.LowLevelKeyboardProc _proc = HookCallback;
         static IntPtr _hookID = IntPtr.Zero;
+        static Action m_f2action;
 
-        public static void StartHook()
+        public static void StartHook(Action f2action)
         {
+            m_f2action = f2action;
             SetHook(_proc);
         }
         public static void EndHook()
@@ -46,8 +48,7 @@ namespace WinRealCapture.Models
                     // Console.WriteLine("Ctrl:{0}, {1}, {2}, {3}", ctrl ? "1" : "0", Convert.ToString((int)lParam, 2), Convert.ToString((int)wParam, 2), Convert.ToString(s, 2).PadLeft(16, '0'));
                     if (ctrl)
                     {
-                        // DoCapture();
-                        Debug.WriteLine("Ctrl+F2");
+                        m_f2action();
                     }
                 }
             }

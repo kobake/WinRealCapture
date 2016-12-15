@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,13 +37,20 @@ namespace WinRealCapture
             }
 
             // キーボードフック開始
-            KeyboardHook.StartHook();
+            KeyboardHook.StartHook(OnCtrlF2);
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
             // キーボードフック終了
             KeyboardHook.EndHook();
+        }
+
+        // Ctrl + F2 が押されたときに呼ばれるところ
+        private void OnCtrlF2()
+        {
+            // DoCapture();
+            Debug.WriteLine("Ctrl+F2");
         }
 
 
