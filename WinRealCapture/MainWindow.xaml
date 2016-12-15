@@ -11,11 +11,22 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
+
+    <!-- メニュー -->
+    <Menu Grid.Row="0" Padding="0,4,0,4">
+      <MenuItem Header="_File">
+        <MenuItem x:Name="ExitMenu" Header="E_xit" Click="ExitMenu_Click" />
+      </MenuItem>
+      <MenuItem Header="_Help">
+        <MenuItem x:Name="GitHubMenu" Header="Access to GitHub" Click="GitHubMenu_Click"  />
+      </MenuItem>
+    </Menu>
     
     <!-- 保存先フォルダ指定部分 (デフォルトでは exe フォルダにでもする？ -->
-    <Border Grid.Row="0" BorderThickness="1" BorderBrush="#ddd" Margin="4,4,4,0" Padding="4">
+    <Border Grid.Row="1" BorderThickness="1" BorderBrush="#ddd" Margin="4,4,4,0" Padding="4">
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
@@ -30,7 +41,7 @@
     </Border>
 
     <!-- メッセージ表示部分 -->
-    <Border Grid.Row="1" BorderThickness="1" BorderBrush="#ddd" Margin="4" Padding="4">
+    <Border Grid.Row="2" BorderThickness="1" BorderBrush="#ddd" Margin="4" Padding="4">
       <StackPanel Orientation="Vertical">
         <Label x:Name="MessageLabel" Content="Usage: You can capture active window image by pressing Ctrl + F2 key." />
         <Label x:Name="ErrorLabel" Content="Error: none" Foreground="#f00" />
@@ -38,7 +49,7 @@
     </Border>
 
     <!-- 画像一覧プレビュー部分 -->
-    <Border Grid.Row="2" BorderThickness="1" BorderBrush="#ddd" Margin="4" Padding="4">
+    <Border Grid.Row="3" BorderThickness="1" BorderBrush="#ddd" Margin="4" Padding="4">
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />

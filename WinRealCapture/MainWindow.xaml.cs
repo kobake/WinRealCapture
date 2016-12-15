@@ -191,6 +191,22 @@ namespace WinRealCapture
             }
         }
 
+        // 終了メニュー
+        private void ExitMenu_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
 
+        // Help - Access GitHub メニュー
+        private void GitHubMenu_Click(object sender, RoutedEventArgs e)
+        {
+            try {
+                Process.Start("https://github.com/kobake/WinRealCapture");
+            }
+            catch(Exception ex)
+            {
+                ShowError("OpenUrlError: " + ex.Message);
+            }
+        }
     }
 }
